@@ -1,7 +1,7 @@
 import "./Form.css";
 import states from "../assets/states.json";
 import departments from "../assets/departments.json";
-import Modal, { TypeFormAction, TypeFormState } from "./Modal";
+import Modal from "./Modal";
 import { useReducer, createRef } from "react";
 import {
   firstNameValidation,
@@ -22,105 +22,75 @@ interface Department {
   name: string;
 }
 
-interface InputRef {
-  ref: React.RefObject<HTMLInputElement>;
-  regex?: RegExp;
-  value: string;
-  modalMessage: string;
+export interface TypeFormState {
+  level: number;
+  errorModal?: string;
+  titleModal?: string;
+}
+
+export interface TypeFormAction {
+  type: string;
+  errorModal?: string;
+  titleModal?: string;
 }
 
 function reducer(state: TypeFormState, action: TypeFormAction): TypeFormState {
   switch (action.type) {
     case "0":
       return {
-        open: +action.type,
+        level: 0,
         errorModal: action.errorModal ?? "",
         titleModal: action.titleModal ?? "",
       };
+      break;
     case "1":
       return {
-        open: +action.type,
+        level: 1,
         errorModal: action.errorModal ?? "",
         titleModal: action.titleModal ?? "",
       };
+      break;
     case "2":
       console.log(state);
       return {
-        open: +action.type,
+        level: 2,
         errorModal: action.errorModal ?? "",
         titleModal: action.titleModal ?? "",
       };
+      break;
     default:
       return state;
   }
 }
 
+interface InputRef {
+  ref: React.RefObject<HTMLInputElement>;
+  regex: RegExp;
+  value: string;
+  modalMessage: string;
+}
+
 function Form() {
   const initialState = {
-    open: 0,
+    level: 0,
     errorModal: "",
     titleModal: "",
   };
   const [state, dispatch] = useReducer(reducer, initialState);
   console.log(state);
 
-  const array: Array<InputRef> = [
+
+  const array :Array<InputRef>= [
     {
       ref: createRef<HTMLInputElement>(),
       regex: firstNameValidation,
-      value: "",
-      modalMessage: "First name needs atleast 2 characters",
-    },
-    {
-      ref: createRef<HTMLInputElement>(),
-      regex: lastNameValidation,
-      value: "",
-      modalMessage: "First name needs atleast 2 characters",
-    },
-    {
-      ref: createRef<HTMLInputElement>(),
-      regex: dateOfBirthValidation,
-      value: "",
-      modalMessage: "First name needs atleast 2 characters",
-    },
-    {
-      ref: createRef<HTMLInputElement>(),
-      regex: startDateValidation,
-      value: "",
-      modalMessage: "First name needs atleast 2 characters",
-    },
-    {
-      ref: createRef<HTMLInputElement>(),
-      value: "",
-      modalMessage: "First name needs atleast 2 characters",
-    },
-    {
-      ref: createRef<HTMLInputElement>(),
-      regex: streetValidation,
-      value: "",
-      modalMessage: "First name needs atleast 2 characters",
-    },
-    {
-      ref: createRef<HTMLInputElement>(),
-      regex: cityValidation,
-      value: "",
-      modalMessage: "First name needs atleast 2 characters",
-    },
-    {
-      ref: createRef<HTMLInputElement>(),
-      value: "",
-      modalMessage: "First name needs atleast 2 characters",
-    },
-    {
-      ref: createRef<HTMLInputElement>(),
-      regex: zipCodeValidation,
-      value: "",
-      modalMessage: "First name needs atleast 2 characters",
-    },
-  ];
-  array.forEach((r) => (r.value = r.ref.current ? r.ref.current.value : ""));
+      value: '',
+      modalMessage: "First name needs atleast 2 characters"
+    }
+  ]
+  array.forEach(r=>r.value=r.ref.current?r.ref.current.value : '')
 
-  const firstNameRef = createRef<HTMLInputElement>();
+  const firstNameRef = array[0].ref;//createRef<HTMLInputElement>();
   const lastNameRef = createRef<HTMLInputElement>();
   const dateOfBirthRef = createRef<HTMLInputElement>();
   const startDateRef = createRef<HTMLInputElement>();
@@ -144,7 +114,7 @@ function Form() {
     let modalMessage = "";
     let titleMessage = "Error...";
 
-    if (
+    if (array.filter(r=>r.ref.current).length === array.length)
       !firstName ||
       !lastName ||
       !dateOfBirth ||
@@ -193,7 +163,20 @@ function Form() {
       employees.push(employee);
       localStorage.setItem("employees", JSON.stringify(employees));
 
-      return;
+      return
+    }
+
+    if (!array.find(c=> {
+      if (!c.regex.test(c.value)) {
+        dispatch({
+          type: "2",
+          errorModal: c.modalMessage,
+          titleModal: titleMessage,
+        });
+        return c
+      }
+    })) {
+      // Show admin error
     }
 
     if (!firstNameValidation.test(firstName.value)) {
@@ -272,11 +255,12 @@ function Form() {
       errorModal: modalMessage,
       titleModal: titleMessage,
     });
+
   }
 
   return (
     <>
-      <div className={`main-form${state.open}`}>
+      <div className={`main-form${state.level}`}>
         <form>
           <label htmlFor="first-name"> First Name</label>
           <input type="text" name="name" id="first-name" ref={firstNameRef} />
@@ -329,15 +313,16 @@ function Form() {
           Save
         </button>
       </div>
-      <Modal
-        // open={state.open !== 0}
-        open={state.open}
-        title={state.titleModal}
-        content={state.errorModal}
-        dispatch={(el: TypeFormAction) => dispatch(el)}
-      >
-        <div>hello bonsjours</div>
-      </Modal>
+      {state.level !== 0 ? (
+        <Modal
+          level={state.level}
+          title={state.titleModal}
+          content={state.errorModal}
+          dispatch={dispatch}
+        >
+          <div>hello bonjours</div>
+        </Modal>
+      ) : null}
       <button
         onClick={() => {
           dispatch({
@@ -365,25 +350,3 @@ function Form() {
 }
 
 export default Form;
-
-// const array = [
-//   {
-//     ref: createRef<HTMLInputElement>(),
-//     regex:firstNameValidation,
-//     value:firstNameRef.current ? firstNameRef.current.value : '',
-//     modalMessage: "First name needs atleast 2 characters"
-//   }
-// ]
-
-// if (!array.find(c=> {
-//   if (!c.regex.test(c.value)) {
-//     dispatch({
-//       type: "2",
-//       errorModal: c.modalMessage,
-//       titleModal: titleMessage,
-//     });
-//     return c
-//   }
-// })) {
-//   // Show admin error
-// }

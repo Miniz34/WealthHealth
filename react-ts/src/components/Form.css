@@ -20,3 +20,12 @@ label {
 .address {
   margin-top: 10px;
 }
+
+.main-form0 {
+  opacity: 1;
+}
+
+.main-form1,
+.main-form2 {
+  opacity: 0.2;
+}

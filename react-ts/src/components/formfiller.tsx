@@ -22,31 +22,24 @@ interface Department {
   name: string;
 }
 
-interface InputRef {
-  ref: React.RefObject<HTMLInputElement>;
-  regex?: RegExp;
-  value: string;
-  modalMessage: string;
-}
-
 function reducer(state: TypeFormState, action: TypeFormAction): TypeFormState {
   switch (action.type) {
     case "0":
       return {
-        open: +action.type,
+        level: +action.type,
         errorModal: action.errorModal ?? "",
         titleModal: action.titleModal ?? "",
       };
     case "1":
       return {
-        open: +action.type,
+        level: +action.type,
         errorModal: action.errorModal ?? "",
         titleModal: action.titleModal ?? "",
       };
     case "2":
       console.log(state);
       return {
-        open: +action.type,
+        level: +action.type,
         errorModal: action.errorModal ?? "",
         titleModal: action.titleModal ?? "",
       };
@@ -57,68 +50,12 @@ function reducer(state: TypeFormState, action: TypeFormAction): TypeFormState {
 
 function Form() {
   const initialState = {
-    open: 0,
+    level: 0,
     errorModal: "",
     titleModal: "",
   };
   const [state, dispatch] = useReducer(reducer, initialState);
   console.log(state);
-
-  const array: Array<InputRef> = [
-    {
-      ref: createRef<HTMLInputElement>(),
-      regex: firstNameValidation,
-      value: "",
-      modalMessage: "First name needs atleast 2 characters",
-    },
-    {
-      ref: createRef<HTMLInputElement>(),
-      regex: lastNameValidation,
-      value: "",
-      modalMessage: "First name needs atleast 2 characters",
-    },
-    {
-      ref: createRef<HTMLInputElement>(),
-      regex: dateOfBirthValidation,
-      value: "",
-      modalMessage: "First name needs atleast 2 characters",
-    },
-    {
-      ref: createRef<HTMLInputElement>(),
-      regex: startDateValidation,
-      value: "",
-      modalMessage: "First name needs atleast 2 characters",
-    },
-    {
-      ref: createRef<HTMLInputElement>(),
-      value: "",
-      modalMessage: "First name needs atleast 2 characters",
-    },
-    {
-      ref: createRef<HTMLInputElement>(),
-      regex: streetValidation,
-      value: "",
-      modalMessage: "First name needs atleast 2 characters",
-    },
-    {
-      ref: createRef<HTMLInputElement>(),
-      regex: cityValidation,
-      value: "",
-      modalMessage: "First name needs atleast 2 characters",
-    },
-    {
-      ref: createRef<HTMLInputElement>(),
-      value: "",
-      modalMessage: "First name needs atleast 2 characters",
-    },
-    {
-      ref: createRef<HTMLInputElement>(),
-      regex: zipCodeValidation,
-      value: "",
-      modalMessage: "First name needs atleast 2 characters",
-    },
-  ];
-  array.forEach((r) => (r.value = r.ref.current ? r.ref.current.value : ""));
 
   const firstNameRef = createRef<HTMLInputElement>();
   const lastNameRef = createRef<HTMLInputElement>();
@@ -276,7 +213,7 @@ function Form() {
 
   return (
     <>
-      <div className={`main-form${state.open}`}>
+      <div className={`main-form${state.level}`}>
         <form>
           <label htmlFor="first-name"> First Name</label>
           <input type="text" name="name" id="first-name" ref={firstNameRef} />
@@ -330,8 +267,8 @@ function Form() {
         </button>
       </div>
       <Modal
-        // open={state.open !== 0}
-        open={state.open}
+        open={state.level !== 0}
+        level={state.level}
         title={state.titleModal}
         content={state.errorModal}
         dispatch={(el: TypeFormAction) => dispatch(el)}
