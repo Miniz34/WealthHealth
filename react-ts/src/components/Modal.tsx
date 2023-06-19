@@ -1,45 +1,41 @@
-import { ReactNode, useRef, useEffect, useState } from "react";
+import { ReactNode, useRef, useEffect, useState, useCallback } from "react";
 import "./Modal.css";
 
-export interface TypeFormState {
-  open: number;
-  errorModal?: string;
-  titleModal?: string;
+/**
+ * Props for the Modal component.
+ * @member {string} mode - info / warning / error
+ * @member {string} title - The title of the modal.
+ * @member {ReactNode} children - The children components to be rendered inside the modal.
+ * @member {string} className - The additional class name for styling the modal.
+ * @member {Function} onClose - callback requiring a "true" value to actuallu close the modal
+ * @member {Function} onClosed - callback append on modal closed
+ * @member {boolean} enableFadeIn - optional
+ * @member {boolean} enableFadeOut - optional
+ */
+interface ModalProps {
+  mode: string; // "info", "error" , "warning"
+  title?: string;
+  children?: ReactNode;
+  className?: string;
+  onClosed?: () => void;
+  onClose?: () => boolean;
+  enableFadeIn?: boolean;
+  enableFadeOut?: boolean;
 }
 
 /**
- * @member {string} type
- * @member {string?} errorModal
- * @member {string} titleModal
+ * Renders the close button of the modal.
+ * @member {Function} onClick - The callback function to be called when the close button is clicked.
  */
-export interface TypeFormAction {
-  type: string;
-  errorModal?: string;
-  titleModal?: string;
-}
-
-interface DispatchFunction {
-  (a: TypeFormAction): void;
-}
-
-interface ModalProps {
-  title?: string;
-  children?: ReactNode;
-  open: number;
-  className?: string;
-  content?: string;
-  dispatch: DispatchFunction;
-}
-
 interface CrossProps {
-  click: DispatchFunction;
+  onClick: () => void;
 }
 
+/**
+ * Renders the title of the modal.
+ * @member {string} text - The text to be displayed as the title.
+ */
 interface TitleProps {
-  text: string;
-}
-
-interface ContentProps {
   text: string;
 }
 
@@ -47,14 +43,10 @@ function Title({ text }: TitleProps) {
   return <div className="modal-text">{text}</div>;
 }
 
-function Content({ text }: ContentProps) {
-  return <div className="modal-content">{text}</div>;
-}
-
-function Cross({ click }: CrossProps) {
+function Cross({ onClick }: CrossProps) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function CloseModal(_event: React.MouseEvent<HTMLDivElement>) {
-    click({ type: "0" });
+    onClick();
   }
   return (
     <div onClick={CloseModal} className="modal-close">
@@ -63,33 +55,61 @@ function Cross({ click }: CrossProps) {
   );
 }
 
-const cssClasses = ["", "modal-blue", "modal-red"];
+// const cssClasses = ["", "modal-blue", "modal-red"];
+const cssClasses = new Map<string, string>();
+cssClasses.set("info", "modal-blue");
+cssClasses.set("warning", "modal-orange");
+cssClasses.set("error", "modal-red");
 
-function Modal({ title, open, className, content, dispatch }: ModalProps) {
-  const contentClass =
-    cssClasses[open >= 0 && open < cssClasses.length ? open : 0];
+function Modal({
+  mode,
+  title,
+  children,
+  enableFadeIn,
+  enableFadeOut,
+  onClose,
+  onClosed,
+}: ModalProps) {
+  const contentClass = cssClasses.get(mode.toLowerCase()) || "";
+  console.log(contentClass);
 
   const modalRef = useRef<HTMLDivElement>(null);
 
-  //a utiliser
-  const [opened, setOpened] = useState(open === undefined ? true : open);
+  //TODO
+  const [isFadeOut, setIsFadeOut] = useState(false);
 
-  // const [opened, setOpened] = useState(true);
+  console.log(isFadeOut);
+
+  const closeModal = useCallback(() => {
+    console.log("close modal");
+    if (enableFadeOut) {
+      if (!isFadeOut) {
+        if ((onClose && onClose()) || !onClose) {
+          setIsFadeOut(true);
+          setTimeout(() => {
+            console.log("%cClose NOW !", "color:cyan;");
+            onClosed && onClosed();
+            setIsFadeOut(false);
+          }, 1000);
+        }
+      }
+    } else {
+      console.log("%cClose Without FADE OUT !", "color:orange;");
+      if ((onClose && onClose()) || !onClose) {
+        setIsFadeOut(false);
+        onClosed && onClosed();
+      }
+    }
+  }, [enableFadeOut, isFadeOut, onClose, onClosed]);
 
   useEffect(() => {
     if (!modalRef.current) {
       console.log("youhou si ce message spam c'est pas cool du tout");
-      // modalRef.current = document.querySelector(
-      //   ".main-modal"
-      // ) as HTMLDivElement;
-    }
-
-    function closeModal() {
-      dispatch({ type: "0", errorModal: "Modal closed" });
     }
 
     function handleEscape(event: KeyboardEvent) {
       if (event.key === "Escape") {
+        console.log("escape down");
         closeModal();
       }
     }
@@ -99,29 +119,40 @@ function Modal({ title, open, className, content, dispatch }: ModalProps) {
         modalRef.current &&
         !modalRef.current.contains(event.target as Node)
       ) {
+        console.log("outside click");
         closeModal();
       }
     }
 
     window.addEventListener("mousedown", handleOutsideClick);
     window.addEventListener("keydown", handleEscape);
+
     return () => {
       window.removeEventListener("mousedown", handleOutsideClick);
       window.removeEventListener("keydown", handleEscape);
     };
-  }, [dispatch]);
+  }, [closeModal]);
 
   return (
     <>
-      {open ? (
-        <div ref={modalRef} className={`${contentClass} main-modal`}>
-          <div className="modal-title">
-            {title && title !== "" ? <Title text={title} /> : null}
-            <Cross click={dispatch} />
-          </div>
-          {content && content !== "" ? <Content text={content} /> : null}
+      <div
+        ref={modalRef}
+        className={
+          "modal-main" +
+          (contentClass
+            ? " " +
+              contentClass +
+              (enableFadeIn ? " modal-fade-in" : "") +
+              (isFadeOut ? " modal-fade-out" : "")
+            : "")
+        }
+      >
+        <div className="modal-title">
+          {title && title !== "" ? <Title text={title} /> : null}
+          <Cross onClick={closeModal} />
         </div>
-      ) : null}
+        <div className="modal-body">{children}</div>
+      </div>
     </>
   );
 }

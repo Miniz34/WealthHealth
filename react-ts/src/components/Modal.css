@@ -1,10 +1,31 @@
+.modal-main {
+  display: none;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.4;
+  }
+}
+
 .modal-blue {
   display: flex;
   flex-direction: column;
   position: absolute;
   z-index: 9999;
   margin: auto;
-  background-color: #2c3e50;
   width: 350px;
   height: 125px;
   color: white;
@@ -13,6 +34,26 @@
   left: 50%;
   top: 25%;
   transform: translate(-50%, -25%);
+  background-color: #2c3e50;
+  opacity: 1;
+}
+
+.modal-orange {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  z-index: 9999;
+  margin: auto;
+  width: 350px;
+  height: 125px;
+  color: white;
+  border: solid black 2px;
+  border-radius: 20px;
+  left: 50%;
+  top: 25%;
+  transform: translate(-50%, -25%);
+  background-color: #2c3e50;
+  opacity: 1;
 }
 
 .modal-red {
@@ -21,7 +62,6 @@
   position: absolute;
   z-index: 9999;
   margin: auto;
-  background-color: #832424;
   width: 350px;
   height: 125px;
   color: white;
@@ -30,6 +70,16 @@
   left: 50%;
   top: 25%;
   transform: translate(-50%, -25%);
+  background-color: #832424;
+}
+
+.modal-fade-in {
+  opacity: 0;
+  animation: fadeIn 1s ease-in-out forwards;
+}
+
+.modal-fade-out {
+  animation: fadeOut 1s ease-in-out forwards;
 }
 
 .modal-title {
@@ -46,16 +96,13 @@
 .modal-close {
   position: absolute;
   right: 8px;
+  cursor: pointer;
 }
 
-.modal-content {
+.modal-body {
   font-size: 18px;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.modal-close {
-  cursor: pointer;
 }

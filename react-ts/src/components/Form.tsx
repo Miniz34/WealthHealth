@@ -1,7 +1,7 @@
 import "./Form.css";
 import states from "../assets/states.json";
 import departments from "../assets/departments.json";
-import Modal, { TypeFormAction, TypeFormState } from "./Modal";
+import Modal from "./Modal";
 import { useReducer, createRef } from "react";
 import {
   firstNameValidation,
@@ -13,6 +13,28 @@ import {
   zipCodeValidation,
 } from "../utils/validation.js";
 
+/**
+ * @member {number} open
+ * @member {string?} errorModal
+ * @member {string} titleModal
+ */
+export interface TypeFormState {
+  open: number;
+  errorModal?: string;
+  titleModal?: string;
+}
+
+/**
+ * @member {string} type
+ * @member {string?} errorModal
+ * @member {string} titleModal
+ */
+export interface TypeFormAction {
+  type: string;
+  errorModal?: string;
+  titleModal?: string;
+}
+
 interface State {
   name: string;
   abbreviation: string;
@@ -22,12 +44,12 @@ interface Department {
   name: string;
 }
 
-interface InputRef {
-  ref: React.RefObject<HTMLInputElement>;
-  regex?: RegExp;
-  value: string;
-  modalMessage: string;
-}
+// interface InputRef {
+//   ref: React.RefObject<HTMLInputElement>;
+//   regex?: RegExp;
+//   value: string;
+//   modalMessage: string;
+// }
 
 function reducer(state: TypeFormState, action: TypeFormAction): TypeFormState {
   switch (action.type) {
@@ -64,61 +86,71 @@ function Form() {
   const [state, dispatch] = useReducer(reducer, initialState);
   console.log(state);
 
-  const array: Array<InputRef> = [
-    {
-      ref: createRef<HTMLInputElement>(),
-      regex: firstNameValidation,
-      value: "",
-      modalMessage: "First name needs atleast 2 characters",
-    },
-    {
-      ref: createRef<HTMLInputElement>(),
-      regex: lastNameValidation,
-      value: "",
-      modalMessage: "First name needs atleast 2 characters",
-    },
-    {
-      ref: createRef<HTMLInputElement>(),
-      regex: dateOfBirthValidation,
-      value: "",
-      modalMessage: "First name needs atleast 2 characters",
-    },
-    {
-      ref: createRef<HTMLInputElement>(),
-      regex: startDateValidation,
-      value: "",
-      modalMessage: "First name needs atleast 2 characters",
-    },
-    {
-      ref: createRef<HTMLInputElement>(),
-      value: "",
-      modalMessage: "First name needs atleast 2 characters",
-    },
-    {
-      ref: createRef<HTMLInputElement>(),
-      regex: streetValidation,
-      value: "",
-      modalMessage: "First name needs atleast 2 characters",
-    },
-    {
-      ref: createRef<HTMLInputElement>(),
-      regex: cityValidation,
-      value: "",
-      modalMessage: "First name needs atleast 2 characters",
-    },
-    {
-      ref: createRef<HTMLInputElement>(),
-      value: "",
-      modalMessage: "First name needs atleast 2 characters",
-    },
-    {
-      ref: createRef<HTMLInputElement>(),
-      regex: zipCodeValidation,
-      value: "",
-      modalMessage: "First name needs atleast 2 characters",
-    },
-  ];
-  array.forEach((r) => (r.value = r.ref.current ? r.ref.current.value : ""));
+  // const array: Array<InputRef> = [
+  //   {
+  //     ref: createRef<HTMLInputElement>(),
+  //     regex: firstNameValidation,
+  //     value: "",
+  //     modalMessage: "First name needs atleast 2 characters",
+  //   },
+  //   {
+  //     ref: createRef<HTMLInputElement>(),
+  //     regex: lastNameValidation,
+  //     value: "",
+  //     modalMessage: "First name needs atleast 2 characters",
+  //   },
+  //   {
+  //     ref: createRef<HTMLInputElement>(),
+  //     regex: dateOfBirthValidation,
+  //     value: "",
+  //     modalMessage: "First name needs atleast 2 characters",
+  //   },
+  //   {
+  //     ref: createRef<HTMLInputElement>(),
+  //     regex: startDateValidation,
+  //     value: "",
+  //     modalMessage: "First name needs atleast 2 characters",
+  //   },
+  //   {
+  //     ref: createRef<HTMLInputElement>(),
+  //     value: "",
+  //     modalMessage: "First name needs atleast 2 characters",
+  //   },
+  //   {
+  //     ref: createRef<HTMLInputElement>(),
+  //     regex: streetValidation,
+  //     value: "",
+  //     modalMessage: "First name needs atleast 2 characters",
+  //   },
+  //   {
+  //     ref: createRef<HTMLInputElement>(),
+  //     regex: cityValidation,
+  //     value: "",
+  //     modalMessage: "First name needs atleast 2 characters",
+  //   },
+  //   {
+  //     ref: createRef<HTMLInputElement>(),
+  //     value: "",
+  //     modalMessage: "First name needs atleast 2 characters",
+  //   },
+  //   {
+  //     ref: createRef<HTMLInputElement>(),
+  //     regex: zipCodeValidation,
+  //     value: "",
+  //     modalMessage: "First name needs atleast 2 characters",
+  //   },
+  // ];
+  // array.forEach((r) => (r.value = r.ref.current ? r.ref.current.value : ""));
+
+  // const firstNameRef = array[0].ref; //createRef<HTMLInputElement>();
+  // const lastNameRef = array[1].ref; //createRef<HTMLInputElement>();
+  // const dateOfBirthRef = array[2].ref; //createRef<HTMLInputElement>();
+  // const startDateRef = array[3].ref; //createRef<HTMLInputElement>();
+  // const departmentRef = array[4].ref; //createRef<HTMLInputElement>();
+  // const streetRef = array[5].ref; //createRef<HTMLInputElement>();
+  // const cityRef = array[6].ref; //createRef<HTMLInputElement>();
+  // const passtateRef = array[7].ref; //createRef<HTMLInputElement>();
+  // const zipCodeRef = array[8].ref; //createRef<HTMLInputElement>();
 
   const firstNameRef = createRef<HTMLInputElement>();
   const lastNameRef = createRef<HTMLInputElement>();
@@ -176,9 +208,16 @@ function Form() {
         titleModal: titleMessage,
       });
 
-      const employees =
-        JSON.parse(localStorage.getItem("employees") || "") || [];
-
+      let employees = [];
+      const storedEmployees = localStorage.getItem("employees");
+      if (storedEmployees) {
+        try {
+          employees = JSON.parse(storedEmployees);
+        } catch (error) {
+          console.error("Error parsing employees from localStorage:", error);
+          employees = [];
+        }
+      }
       const employee = {
         firstName: firstName.value,
         lastName: lastName.value,
@@ -196,13 +235,17 @@ function Form() {
       return;
     }
 
+    const showMessage = (
+      type: string,
+      errorModal: string,
+      titleModal: string
+    ) => {
+      dispatch({ type, errorModal, titleModal });
+    };
+
     if (!firstNameValidation.test(firstName.value)) {
       modalMessage = "First name needs atleast 2 characters";
-      dispatch({
-        type: "2",
-        errorModal: modalMessage,
-        titleModal: titleMessage,
-      });
+      showMessage("2", modalMessage, titleMessage);
       return;
     }
 
@@ -329,15 +372,24 @@ function Form() {
           Save
         </button>
       </div>
-      <Modal
-        // open={state.open !== 0}
-        open={state.open}
-        title={state.titleModal}
-        content={state.errorModal}
-        dispatch={(el: TypeFormAction) => dispatch(el)}
-      >
-        <div>hello bonsjours</div>
-      </Modal>
+      {state.open > 0 ? (
+        <Modal
+          mode={["info", "warning", "error"][state.open]}
+          title={state.titleModal}
+          enableFadeIn={true}
+          enableFadeOut={true}
+          onClose={() => {
+            console.log("Demande de cloture de la Modale");
+            return true;
+          }}
+          onClosed={() => {
+            console.log("Modal Fermée !");
+            dispatch({ type: "0", errorModal: "Modal closed" });
+          }}
+        >
+          <div>{state.errorModal}</div>
+        </Modal>
+      ) : null}
       <button
         onClick={() => {
           dispatch({

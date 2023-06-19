@@ -1,7 +1,7 @@
 import "./Form.css";
-import states from "../assets/states.json";
-import departments from "../assets/departments.json";
-import Modal from "./Modal";
+import states from "../../assets/states.json";
+import departments from "../../assets/departments.json";
+import Modal from "../Modal.js";
 import { useReducer, createRef } from "react";
 import {
   firstNameValidation,
@@ -11,7 +11,7 @@ import {
   startDateValidation,
   streetValidation,
   zipCodeValidation,
-} from "../utils/validation.js";
+} from "../../utils/validation.js";
 
 interface State {
   name: string;
