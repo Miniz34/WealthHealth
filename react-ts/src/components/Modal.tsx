@@ -60,7 +60,7 @@ const cssClasses = new Map<string, string>();
 cssClasses.set("info", "modal-blue");
 cssClasses.set("warning", "modal-orange");
 cssClasses.set("error", "modal-red");
-
+console.log(cssClasses);
 function Modal({
   mode,
   title,

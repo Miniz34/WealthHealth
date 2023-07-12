@@ -1,0 +1,17 @@
+.table {
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.table .rdt_Pagination {
+  order: -1;
+}
+
+.firstname {
+  color: black;
+}
+
+.data-table tbody td {
+  color: black;
+}
