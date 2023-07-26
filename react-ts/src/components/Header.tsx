@@ -1,5 +1,9 @@
 import { Link } from "react-router-dom";
 import "./Header.css";
+import { useContext } from "react";
+import Employee from "../pages/Employee";
+// import { ModalContext } from "modal-kf-react/ModalProvider";
+import { ModalContext } from "./Modal/ModalProvider";
 
 interface HeaderProps {
   title: string;
@@ -8,16 +12,28 @@ interface HeaderProps {
 }
 
 function Header({ title, link, subtitle }: HeaderProps) {
+  const { DisplayModal } = useContext(ModalContext);
+  const { open } = useContext(ModalContext);
+
+  const showEmployees = () => {
+    DisplayModal({
+      mode: "custom",
+      children: <Employee />,
+      delay: 25000,
+      modalPosition: "top-left",
+    });
+  };
+
   return (
-    <div className="header">
+    <div className={open ? "header" + " " + "form-hide" : "header"}>
       <h1>{title}</h1>
-
       {link ? (
-        <div>
+        <button>
           <Link to="/employee-list">{link}</Link>
-        </div>
+        </button>
       ) : null}
-
+      <br />
+      {/* <button onClick={showEmployees}>click</button> */}
       {subtitle ? <h2>{subtitle}</h2> : null}
     </div>
   );

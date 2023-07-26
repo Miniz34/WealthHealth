@@ -1,12 +1,7 @@
 import DataTable from "react-data-table-component";
 import "./table.css";
 
-import {
-  sortString,
-  sortDate,
-  sortZipCode,
-  sortStartDate,
-} from "../utils/sortingUtils";
+import { sortString, sortDate, sortZipCode } from "../utils/sortingUtils";
 
 interface ItemSort {
   firstName: string;
@@ -25,7 +20,6 @@ function Table() {
   const employeesList = employeesListJSON
     ? JSON.parse(employeesListJSON)
     : null;
-  console.log(employeesList);
 
   const columns = [
     {
@@ -39,7 +33,8 @@ function Table() {
       name: "Last Name",
       selector: (row: ItemSort) => row.lastName,
       sortable: true,
-      sortFunction: sortString,
+      sortFunction: (rowA: ItemSort, rowB: ItemSort) =>
+        sortString(rowA.lastName, rowB.lastName),
     },
     {
       name: "Start Date",
@@ -52,31 +47,36 @@ function Table() {
       name: "Department",
       selector: (row: ItemSort) => row.department,
       sortable: true,
-      sortFunction: sortString,
+      sortFunction: (rowA: ItemSort, rowB: ItemSort) =>
+        sortString(rowA.department, rowB.department),
     },
     {
       name: "Date of Birth",
       selector: (row: ItemSort) => row.dateOfBirth,
       sortable: true,
-      sortFunction: sortDate,
+      sortFunction: (rowA: ItemSort, rowB: ItemSort) =>
+        sortDate(rowA.dateOfBirth, rowB.dateOfBirth),
     },
     {
       name: "Street",
       selector: (row: ItemSort) => row.street,
       sortable: true,
-      sortFunction: sortString,
+      sortFunction: (rowA: ItemSort, rowB: ItemSort) =>
+        sortString(rowA.street, rowB.street),
     },
     {
       name: "City",
       selector: (row: ItemSort) => row.city,
       sortable: true,
-      sortFunction: sortString,
+      sortFunction: (rowA: ItemSort, rowB: ItemSort) =>
+        sortString(rowA.city, rowB.city),
     },
     {
       name: "State",
       selector: (row: ItemSort) => row.state,
       sortable: true,
-      sortFunction: sortString,
+      sortFunction: (rowA: ItemSort, rowB: ItemSort) =>
+        sortString(rowA.state, rowB.state),
     },
     {
       name: "Zip Code",

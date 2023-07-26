@@ -21,11 +21,31 @@ label {
   margin-top: 10px;
 }
 
-.main-form0 {
-  opacity: 1;
+.form-hide {
+  pointer-events: none;
+  opacity: 0.2;
 }
 
-.main-form1,
-.main-form2 {
-  opacity: 0.2;
+input {
+  width: 250px;
+}
+
+#state:first-child {
+  width: 50%;
+}
+
+#state {
+  width: 250px;
+  margin: auto;
+}
+
+#department {
+  width: 250px;
+  margin: auto;
+}
+
+button {
+  margin-top: 20px;
+  background-color: #0b6c6c;
+  color: black;
 }

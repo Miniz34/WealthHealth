@@ -21,6 +21,11 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+
+  "include": ["src", "node_modules"],
+  "references": [{ "path": "./tsconfig.node.json" }],
+  "files": [
+    "./src/components//Modal/Modal.tsx",
+    "./src/components/Modal/ModalProvider.tsx"
+  ]
 }

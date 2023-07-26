@@ -1,8 +1,7 @@
 import "./Form.css";
 import states from "../assets/states.json";
 import departments from "../assets/departments.json";
-import Modal from "./Modal";
-import { useReducer, createRef, useState } from "react";
+import { createRef, useState, useContext } from "react";
 import {
   firstNameValidation,
   lastNameValidation,
@@ -12,11 +11,16 @@ import {
   streetValidation,
   zipCodeValidation,
 } from "../utils/validation.js";
+import { ModalContext } from "./Modal/ModalProvider";
+
+import Randomizer from "../utils/random.js";
 
 import Select from "react-select";
 import { StylesConfig } from "react-select";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+
+import { DisplayModalProps } from "./Modal/ModalProvider";
 
 /**
  * @member {string} type
@@ -53,50 +57,9 @@ interface Department {
   name: string;
 }
 
-// interface InputRef {
-//   ref: React.RefObject<HTMLInputElement>;
-//   regex?: RegExp;
-//   value: string;
-//   modalMessage: string;
-// }
-
-const MODAL_DISPLAY_HIDDEN = "DISPLAY_HIDDEN";
-const MODAL_DISPLAY_INFO = "DISPLAY_INFO";
-const MODAL_DISPLAY_ERROR = "DISPLAY_ERROR";
-
-function reducer(state: TypeFormState, action: TypeFormAction): TypeFormState {
-  switch (action.type) {
-    case MODAL_DISPLAY_HIDDEN:
-      return {
-        type: action.type,
-        title: action.title ?? "",
-        message: action.message ?? "",
-      };
-    case MODAL_DISPLAY_INFO:
-      return {
-        type: action.type,
-        title: action.title ?? "",
-        message: action.message ?? "",
-      };
-    case MODAL_DISPLAY_ERROR:
-      return {
-        type: action.type,
-        title: action.title ?? "",
-        message: action.message ?? "",
-      };
-    default:
-      return state;
-  }
-}
-
 function Form() {
-  const initialState = {
-    type: MODAL_DISPLAY_HIDDEN,
-    title: "",
-    message: "",
-  };
-  const [state, dispatch] = useReducer(reducer, initialState);
-  console.log(state);
+  const { DisplayModal } = useContext(ModalContext);
+  const { open } = useContext(ModalContext);
 
   const firstNameRef = createRef<HTMLInputElement>();
   const lastNameRef = createRef<HTMLInputElement>();
@@ -138,6 +101,43 @@ function Form() {
     }),
   };
 
+  function addRandomEmployee() {
+    let employees = [];
+    try {
+      const storedEmployees = localStorage.getItem("employees");
+      if (storedEmployees) {
+        employees = JSON.parse(storedEmployees);
+      }
+      const employee = {
+        firstName: Randomizer.name(1, 5),
+        lastName: Randomizer.name(1, 5),
+        dateOfBirth: Randomizer.date(),
+        startDate: Randomizer.date(),
+        department: Randomizer.department(),
+        street: Randomizer.name(1, 5),
+        city: Randomizer.name(1, 5),
+        state: Randomizer.state(),
+        zipCode: Randomizer.zipcode(),
+      };
+      employees.push(employee);
+      localStorage.setItem("employees", JSON.stringify(employees));
+      DisplayModal({
+        mode: "info",
+        title: "Success !",
+        enableFadeOut: false,
+        enableFadeIn: false,
+        children: "Employee created successfully",
+      });
+    } catch (error) {
+      DisplayModal({
+        mode: "error",
+        title: "Parsing-error",
+        children:
+          "Error parsing employees from localStorage " + JSON.stringify(error),
+      });
+    }
+  }
+
   function validateForm() {
     const firstName = firstNameRef.current;
     const lastName = lastNameRef.current;
@@ -148,8 +148,6 @@ function Form() {
     const city = cityRef.current;
     // const passtate = passtateRef.current;
     const zipCode = zipCodeRef.current;
-
-    console.log(formatDate(dateOfBirthPicker));
 
     if (
       !firstName ||
@@ -163,82 +161,81 @@ function Form() {
       !zipCode
     ) {
       // show error modal
-      dispatch({
-        type: MODAL_DISPLAY_ERROR,
-        title: "Error",
-        message: "all fields are required to submit a user",
-      });
+      DisplayModal({
+        mode: "info",
+        children: "J'ai oublié ",
+      } as DisplayModalProps);
       return;
     }
 
     if (!firstNameValidation.test(firstName.value)) {
-      dispatch({
-        type: MODAL_DISPLAY_ERROR,
+      DisplayModal({
+        mode: "error",
         title: "Error",
-        message: "First name needs atleast 2 characters",
+        children: "First name needs atleast 2 characters",
       });
       return;
     }
 
     if (!lastNameValidation.test(lastName.value)) {
-      dispatch({
-        type: MODAL_DISPLAY_ERROR,
+      DisplayModal({
+        mode: "error",
         title: "Error",
-        message: "Last name needs atleast 2 characters",
+        children: "Last name needs atleast 2 characters",
       });
       return;
     }
 
     if (!cityValidation.test(city.value)) {
-      dispatch({
-        type: MODAL_DISPLAY_ERROR,
+      DisplayModal({
+        mode: "error",
         title: "Error",
-        message: "City needs atleast 2 characters",
+        children: "City needs atleast 2 characters",
       });
       return;
     }
 
     if (!dateOfBirthValidation.test(formatDate(dateOfBirthPicker))) {
-      dispatch({
-        type: MODAL_DISPLAY_ERROR,
+      DisplayModal({
+        mode: "error",
         title: "Error",
-        message: "First name needs atleast 2 characters",
+        children: "First name needs atleast 2 characters",
       });
       return;
     }
 
     if (!startDateValidation.test(formatDate(startDatePicker))) {
-      dispatch({
-        type: MODAL_DISPLAY_ERROR,
+      DisplayModal({
+        mode: "error",
         title: "Error",
-        message: "start date needs to be in the dd/mm/yyyy format",
+        children: "start date needs to be in the dd/mm/yyyy format",
       });
       return;
     }
 
     if (!streetValidation.test(street.value)) {
-      dispatch({
-        type: MODAL_DISPLAY_ERROR,
+      DisplayModal({
+        mode: "error",
         title: "Error",
-        message: "street needs atleast 2 characters",
+        children: "street needs atleast 2 characters",
       });
       return;
     }
 
     if (!zipCodeValidation.test(zipCode.value)) {
-      dispatch({
-        type: MODAL_DISPLAY_ERROR,
+      DisplayModal({
+        mode: "error",
         title: "Error",
-        message: "zip code needs atleast 5 numbers",
+        children: "zip code needs atleast 5 numbers",
       });
       return;
     }
 
     if (selectedState === null) {
-      dispatch({
-        type: MODAL_DISPLAY_ERROR,
+      DisplayModal({
+        mode: "error",
         title: "Error",
-        message: "Hello",
+        children: "Hello",
       });
       return;
     }
@@ -254,10 +251,10 @@ function Form() {
       selectedState !== null &&
       zipCode.value
     ) {
-      dispatch({
-        type: MODAL_DISPLAY_INFO,
+      DisplayModal({
+        mode: "info",
         title: "Success !",
-        message: "Employee created successfully",
+        children: "Employee created successfully",
       });
 
       let employees = [];
@@ -266,12 +263,15 @@ function Form() {
         try {
           employees = JSON.parse(storedEmployees);
         } catch (error) {
-          dispatch({
-            type: MODAL_DISPLAY_ERROR,
+          DisplayModal({
+            mode: "error",
             title: "Parsing-error",
-            message:
-              "Error parsing employees from localStorage " +
-              JSON.stringify(error),
+            children: (
+              <div>
+                <p>"Error parsing employees from localStorage "</p>
+                <p>{JSON.stringify(error)}</p>
+              </div>
+            ),
           });
           employees = [];
           return;
@@ -296,14 +296,9 @@ function Form() {
     }
   }
 
-  const modal_type = new Map<string, string>();
-  modal_type.set(MODAL_DISPLAY_HIDDEN, "");
-  modal_type.set(MODAL_DISPLAY_ERROR, "error");
-  modal_type.set(MODAL_DISPLAY_INFO, "info");
-
   return (
     <>
-      <div className={`main-form${state.type}`}>
+      <div className={open ? "form-hide" : ""}>
         <form>
           <label htmlFor="first-name"> First Name</label>
           <input type="text" name="name" id="first-name" ref={firstNameRef} />
@@ -420,50 +415,11 @@ function Form() {
             ))}
           </select> */}
         </form>
-        <button type="submit" onClick={validateForm}>
+        <button type="submit" onClick={validateForm} className="submit-button">
           Save
         </button>
       </div>
-      {state.type !== MODAL_DISPLAY_HIDDEN ? (
-        <Modal
-          mode={modal_type.get(state.type) || ""}
-          title={state.title}
-          enableFadeIn={true}
-          enableFadeOut={true}
-          onClose={() => {
-            console.log("Demande de cloture de la Modale");
-            return true;
-          }}
-          onClosed={() => {
-            console.log("Modal Fermée !");
-            dispatch({ type: MODAL_DISPLAY_HIDDEN, message: "Modal closed" });
-          }}
-        >
-          <div>{state.message}</div>
-        </Modal>
-      ) : null}
-      <button
-        onClick={() => {
-          dispatch({
-            type: MODAL_DISPLAY_ERROR,
-            title: "titleMessage 1111",
-            message: "test1",
-          });
-        }}
-      >
-        Toggle 1
-      </button>{" "}
-      <button
-        onClick={() => {
-          dispatch({
-            type: MODAL_DISPLAY_INFO,
-            title: "titleMessage 22222",
-            message: "test2",
-          });
-        }}
-      >
-        Toggle 2
-      </button>
+      <button onClick={addRandomEmployee}>Add random employee (dev)</button>
     </>
   );
 }
@@ -481,7 +437,7 @@ export default Form;
 
 // if (!array.find(c=> {
 //   if (!c.regex.test(c.value)) {
-//     dispatch({
+//     ShowModal({
 //       type: "2",
 //       errorModal: c.modalMessage,
 //       titleModal: titleMessage,

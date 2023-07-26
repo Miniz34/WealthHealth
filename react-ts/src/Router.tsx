@@ -3,7 +3,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import App from "./pages/App";
 import Employee from "./pages/Employee";
-import Employees from "./pages/Employees";
 
 function AppRouter() {
   return (

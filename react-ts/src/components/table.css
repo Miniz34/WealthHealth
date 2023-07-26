@@ -15,3 +15,7 @@
 .data-table tbody td {
   color: black;
 }
+
+option {
+  color: black !important;
+}

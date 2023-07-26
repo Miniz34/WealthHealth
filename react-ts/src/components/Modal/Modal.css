@@ -1,0 +1,194 @@
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.4;
+  }
+}
+
+.modal-main {
+  z-index: 9999;
+  min-width: 350px;
+  width: auto;
+  /* min-height: 125px; */
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  color: white;
+  opacity: 1;
+  box-shadow: 0px 0px 6px 0px #000000;
+}
+.modal-main * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.modal-main-center {
+  position: fixed;
+  left: 39%;
+  top: 39%;
+}
+.modal-main-top-left {
+  position: fixed;
+  left: 5%;
+  top: 5%;
+}
+.modal-main-top-right {
+  position: fixed;
+  right: 5%;
+  top: 5%;
+}
+
+.modal-main-bottom-right {
+  position: fixed;
+  right: 5%;
+  bottom: 5%;
+}
+
+.modal-main-bottom-left {
+  position: fixed;
+  left: 5%;
+  bottom: 5%;
+}
+
+.modal-blue {
+  background-color: #2c3e50;
+  border: solid black 2px;
+  border-radius: 20px;
+}
+
+.modal-mainhorizontal {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  min-width: 400px;
+}
+
+.modal-mainhorizontal {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  min-width: 400px;
+}
+
+/* Styles for the modal title */
+.modal-mainhorizontal .modal-title {
+  /* Other styles for the modal title */
+  /* min-width: 150px; */
+  width: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* padding-right: 10px; */
+}
+
+.modal-mainhorizontal .modal-body {
+  flex: 1;
+}
+
+.modal-body.modal-title-exist.modal-horizontal {
+  border-left: solid black 1px;
+  border-top: none;
+}
+
+.modal-default {
+  background-color: white;
+  color: black;
+  border-radius: 10px;
+}
+
+.modal-orange {
+  background-color: orange;
+  border: solid black 2px;
+  border-radius: 20px;
+}
+
+.modal-red {
+  background-color: #832424;
+  border: solid black 2px;
+  border-radius: 20px;
+}
+
+.modal-fade-in {
+  opacity: 0;
+  animation: fadeIn 1s ease-in-out forwards;
+}
+
+.modal-fade-out {
+  animation: fadeOut 1s ease-in-out forwards;
+}
+
+.modal-body {
+  font-size: 18px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 50px;
+
+  /* TODO : scrollbar modal */
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+}
+
+.modal-title {
+  display: flex;
+  flex-direction: row;
+  /* align-items: center; */
+  justify-content: center;
+
+  font-size: 24px;
+  padding-bottom: 10px;
+  padding-top: 5px;
+}
+
+.modal-title-exist {
+  border-top: 1px solid black;
+}
+
+/* Close */
+
+.modal-close {
+  cursor: pointer;
+  background-color: black;
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 5px;
+  color: white;
+}
+
+.modal-close-right {
+  position: absolute;
+  right: 8px;
+}
+.modal-close-left {
+  position: absolute;
+  left: 8px;
+}
+.modal-close-outside-right {
+  position: absolute;
+  right: -10px;
+  top: -10px;
+}
+
+.modal-close-outside-left {
+  position: absolute;
+  left: -10px;
+  top: -10px;
+}

@@ -1,4 +1,21 @@
 const DaysPerMonth = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+const DepartmentList = [
+  "Sales",
+  "Marketing",
+  "Engineering",
+  "Human ressources",
+  "Legal",
+];
+const StateList = [
+  "Alabama",
+  "Colorado",
+  "Illinois",
+  "Kansas",
+  "Michigan",
+  "Ohio",
+  "Pennsylvania",
+  "Wisconsin",
+];
 
 const Randomizer = {
   int: (min: number, max: number): number => {
@@ -29,6 +46,21 @@ const Randomizer = {
       "/" +
       ("" + y)
     );
+  },
+  department: (): string => {
+    const randomIndex: number = Randomizer.int(0, DepartmentList.length);
+    return DepartmentList[randomIndex];
+  },
+  state: (): string => {
+    const randomIndex: number = Randomizer.int(0, StateList.length);
+    return StateList[randomIndex];
+  },
+  zipcode: (): string => {
+    let zipcode = "";
+    for (let i = 0; i < 5; i++) {
+      zipcode += Randomizer.int(0, 10);
+    }
+    return zipcode;
   },
 };
 
