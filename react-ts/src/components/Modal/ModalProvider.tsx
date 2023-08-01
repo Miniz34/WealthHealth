@@ -11,7 +11,18 @@ import Modal from "./Modal";
  * @member {number} [height=""] - The title to be displayed in the modal.
  * @member {number} [width=""] - The title to be displayed in the modal.
  * @member {string} [color=""] - The title to be displayed in the modal.
- *  @member {string} [textColor=""] - The title to be displayed in the modal.
+ * @member {string} [textColor=""] - The title to be displayed in the modal.
+ * @member {string} [modalPosition=""] - The position of the modal on the screen, 5 possible options : "center", "top-left", "top-right", "bottom-left", "bottom-right"
+ * @member {string} [backgroundColor=""] - The background color of the modal, specified as a CSS color string (e.g., "#ffffff", "rgba(255, 0, 0, 0.5)", etc.).
+ * @member {string} [backgroundColorTitle=""] - The background color of the modal title area, specified as a CSS color string.
+ * @member {string} [textColor=""] - The text color of the modal content, specified as a CSS color string.
+ * @member {string} [closePosition=""] - The position of the close button within the modal, specified as a CSS string, 4 possible options : "right", "left", "outside-right", "outside-left"
+ * @member {string} [borderRadius=""] - The border radius of the modal, specified as a CSS string (e.g., "4px", "50%", etc.).
+ * @member {string} [boxShadow=""] - The box shadow of the modal, specified as a CSS string (e.g., "0 2px 4px rgba(0, 0, 0, 0.2)", "inset 0 1px 2px #ccc", etc.).
+ * @member {string} [border=""] - The border of the modal, specified as a CSS string (e.g., "1px solid #ccc", "2px dashed red", etc.).
+ * @member {string} [borderInside=""] - The border inside the modal, specified as a CSS string (e.g., "1px solid #ccc", "2px dashed red", etc.).
+ * @member {string} [orientation=""] - The orientation of the modal, specified as a CSS string (e.g., "row").
+ *
  *
  * @member {ReactNode | null} [children=null] - The content to be rendered inside the modal. It can be React elements or null.
  * @member {string} [className=""] - Additional CSS class name(s) to be applied to the modal container.
@@ -36,7 +47,7 @@ export interface DisplayModalProps {
   borderRadius?: string;
   boxShadow?: string;
   border?: string;
-  borderColor?: string;
+  borderInside?: string;
   orientation?: string;
   children?: ReactNode | null;
   className?: string;
@@ -64,6 +75,18 @@ export interface DisplayModalProps {
  * @property {(props: DisplayModalProps) function} DisplayModal - A function to trigger the display of a modal
  *                                                               with the provided props.
  * @property {function} CloseModal - A function to close the currently open modal.
+ * * @property {string} modalPosition - The position of the modal on the screen, 5 possible options : "center", "top-left", "top-right", "bottom-left", "bottom-right"
+ * @property {number | string} height - The height of the modal, specified as a number (in pixels) or a CSS string (e.g., "50%", "200px", etc.).
+ * @property {number | string} width - The width of the modal, specified as a number (in pixels) or a CSS string (e.g., "50%", "300px", etc.).
+ * @property {string} backgroundColor - The background color of the modal, specified as a CSS color string (e.g., "#ffffff", "rgba(255, 0, 0, 0.5)", etc.).
+ * @property {string} backgroundColorTitle - The background color of the modal title area, specified as a CSS color string.
+ * @property {string} textColor - The text color of the modal content, specified as a CSS color string.
+ * @property {string} closePosition - The position of the close button within the modal, specified as a CSS string, 4 possible options : "right", "left", "outside-right", "outside-left"
+ * @property {string} borderRadius - The border radius of the modal, specified as a CSS string (e.g., "4px", "50%", etc.).
+ * @property {string} boxShadow - The box shadow of the modal, specified as a CSS string (e.g., "0 2px 4px rgba(0, 0, 0, 0.2)", "inset 0 1px 2px #ccc", etc.).
+ * @property {string} border - The border of the modal, specified as a CSS string (e.g., "1px solid #ccc", "2px dashed red", etc.).
+ * @property {string} borderInside - The border inside the modal, specified as a CSS string (e.g., "1px solid #ccc", "2px dashed red", etc.).
+ * @property {string} orientation - The orientation of the modal, specified as a CSS string (e.g., "row").
  */
 interface ModalContextProps {
   open: boolean;
@@ -80,7 +103,7 @@ interface ModalContextProps {
   borderRadius: string;
   boxShadow: string;
   border: string;
-  borderColor: string;
+  borderInside: string;
   orientation: string;
   subChildren: ReactNode | null;
   onClosed: (() => void) | null;
@@ -106,7 +129,7 @@ const initialState: ModalContextProps = {
   borderRadius: "",
   boxShadow: "",
   border: "",
-  borderColor: "",
+  borderInside: "",
   orientation: "",
   subChildren: null,
   enableFadeIn: true,
@@ -175,10 +198,10 @@ const ModalProvider = ({ children }: ModalProviderProps) => {
           ? props.boxShadow
           : state.boxShadow,
       border: typeof props.border !== "undefined" ? props.border : state.border,
-      borderColor:
-        typeof props.borderColor !== "undefined"
-          ? props.borderColor
-          : state.borderColor,
+      borderInside:
+        typeof props.borderInside !== "undefined"
+          ? props.borderInside
+          : state.borderInside,
 
       orientation:
         typeof props.orientation !== "undefined"
@@ -223,7 +246,7 @@ const ModalProvider = ({ children }: ModalProviderProps) => {
     borderRadius: "",
     boxShadow: "",
     border: "",
-    borderColor: "",
+    borderInside: "",
     orientation: "",
     subChildren: <span>Employee Created!</span>,
     enableFadeIn: true,

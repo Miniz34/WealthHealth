@@ -100,7 +100,7 @@ function Modal() {
     borderRadius,
     boxShadow,
     border,
-    borderColor,
+    borderInside,
     orientation,
     subChildren,
     enableFadeIn,
@@ -205,8 +205,8 @@ function Modal() {
           <div
             className="modal-title"
             style={{
-              paddingLeft: title && orientation === "horizontal" ? "10px" : 0,
-              paddingRight: title && orientation === "horizontal" ? "10px" : 0,
+              paddingLeft: title && orientation === "row" ? "10px" : 0,
+              paddingRight: title && orientation === "row" ? "10px" : 0,
               ...(backgroundColorTitle
                 ? { backgroundColor: backgroundColorTitle }
                 : null),
@@ -227,15 +227,15 @@ function Modal() {
             className={
               "modal-body" +
               (title ? " modal-title-exist" : "") +
-              (orientation === "horizontal" ? " modal-horizontal" : "")
+              (orientation === "row" ? " modal-row" : "")
             }
             style={
-              orientation === "horizontal"
-                ? borderColor
-                  ? { borderLeft: borderColor }
+              orientation === "row"
+                ? borderInside
+                  ? { borderLeft: borderInside }
                   : {}
-                : borderColor
-                ? { borderTop: borderColor }
+                : borderInside
+                ? { borderTop: borderInside }
                 : {}
             }
           >

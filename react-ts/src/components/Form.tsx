@@ -122,11 +122,10 @@ function Form() {
       employees.push(employee);
       localStorage.setItem("employees", JSON.stringify(employees));
       DisplayModal({
-        mode: "info",
-        title: "Success !",
-        enableFadeOut: false,
+        mode: "default",
+        children: "Employee created !",
         enableFadeIn: false,
-        children: "Employee created successfully",
+        enableFadeOut: false,
       });
     } catch (error) {
       DisplayModal({

@@ -13,5 +13,4 @@ npm run build
 npx serve -s dist
 
 //TODO
-Impossible de faire les test (probablement dû à Typescript)
 Centrer la modale pour le position: center
