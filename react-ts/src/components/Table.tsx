@@ -95,13 +95,17 @@ function Table() {
   return (
     <>
       <div className="table">
-        <DataTable
-          columns={columns}
-          data={employeesList}
-          pagination
-          paginationRowsPerPageOptions={[10, 25, 50, 100]}
-          paginationComponentOptions={paginationComponentOptions}
-        />
+        {employeesList ? (
+          <DataTable
+            columns={columns}
+            data={employeesList}
+            pagination
+            paginationRowsPerPageOptions={[10, 25, 50, 100]}
+            paginationComponentOptions={paginationComponentOptions}
+          />
+        ) : (
+          <div>No employee found in the database</div>
+        )}
       </div>
     </>
   );

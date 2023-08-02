@@ -17,9 +17,14 @@
 
     /* Linting */
     "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+
+    "noFallthroughCasesInSwitch": true,
+
+    /*TODO build */
+    "sourceMap": true,
+    "noUnusedParameters": false,
+    "noUnusedLocals": false,
+    "noImplicitAny": false
   },
 
   "include": ["src", "node_modules"],

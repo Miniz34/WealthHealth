@@ -12,14 +12,11 @@ import {
   zipCodeValidation,
 } from "../utils/validation.js";
 import { ModalContext } from "./Modal/ModalProvider";
-
 import Randomizer from "../utils/random.js";
-
 import Select from "react-select";
 import { StylesConfig } from "react-select";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
 import { DisplayModalProps } from "./Modal/ModalProvider";
 
 /**
@@ -63,19 +60,11 @@ function Form() {
 
   const firstNameRef = createRef<HTMLInputElement>();
   const lastNameRef = createRef<HTMLInputElement>();
-  // const dateOfBirthRef = createRef<HTMLInputElement>();
-  // const startDateRef = createRef<HTMLInputElement>();
-  // const departmentRef = createRef<HTMLSelectElement>();
   const streetRef = createRef<HTMLInputElement>();
   const cityRef = createRef<HTMLInputElement>();
-  // const passtateRef = createRef<HTMLSelectElement>();
   const zipCodeRef = createRef<HTMLInputElement>();
-
-  // const [dateOfBirthPicker, setDateOfBirthPicker] = useState<Date | null>(null);
-
   const [dateOfBirthPicker, setDateOfBirthPicker] = useState<Date | null>(null);
   const [startDatePicker, setStartDatePicker] = useState<Date | null>(null);
-
   const [selectedDepartment, setSelectedDepartment] = useState<string | null>(
     null
   );
@@ -102,7 +91,7 @@ function Form() {
   };
 
   function addRandomEmployee() {
-    let employees = [];
+    let employees: any[] = [];
     try {
       const storedEmployees = localStorage.getItem("employees");
       if (storedEmployees) {
@@ -122,7 +111,8 @@ function Form() {
       employees.push(employee);
       localStorage.setItem("employees", JSON.stringify(employees));
       DisplayModal({
-        mode: "default",
+        mode: "info",
+        title: "Succes!",
         children: "Employee created !",
         enableFadeIn: false,
         enableFadeOut: false,
@@ -161,8 +151,9 @@ function Form() {
     ) {
       // show error modal
       DisplayModal({
-        mode: "info",
-        children: "J'ai oublié ",
+        mode: "error",
+        title: "error",
+        children: "Please fill the entire form",
       } as DisplayModalProps);
       return;
     }
@@ -234,7 +225,7 @@ function Form() {
       DisplayModal({
         mode: "error",
         title: "Error",
-        children: "Hello",
+        children: "Please select a state",
       });
       return;
     }
@@ -251,12 +242,11 @@ function Form() {
       zipCode.value
     ) {
       DisplayModal({
-        mode: "info",
-        title: "Success !",
+        mode: "default",
         children: "Employee created successfully",
       });
 
-      let employees = [];
+      let employees: any[] = [];
       const storedEmployees = localStorage.getItem("employees");
       if (storedEmployees) {
         try {
@@ -321,12 +311,6 @@ function Form() {
             maxDate={new Date()}
             yearDropdownItemNumber={new Date().getFullYear() - 1900}
           />
-          {/* <input
-            type="text"
-            name="name"
-            id="date-of-birth"
-            ref={dateOfBirthRef}
-          /> */}
 
           <label htmlFor="start-date"> Start Date</label>
 
@@ -342,9 +326,7 @@ function Form() {
             dateFormat="dd/MM/yyyy"
             scrollableYearDropdown
             minDate={new Date()}
-            // yearDropdownItemNumber={new Date().getFullYear() - 1900}
           />
-          {/* <input type="text" name="name" id="start-date" ref={startDateRef} /> */}
 
           <fieldset className="address">
             <legend>Address</legend>
@@ -358,7 +340,7 @@ function Form() {
             <label htmlFor="state"> State</label>
             <Select
               name="state"
-              id="state"
+              inputId="state"
               options={states.map((state: State) => ({
                 value: state.name,
                 label: state.name,
@@ -386,7 +368,7 @@ function Form() {
 
           <Select
             name="department"
-            id="department"
+            inputId="department"
             options={departments.map((department: Department) => ({
               value: department.name,
               label: department.name,
@@ -406,13 +388,6 @@ function Form() {
             }
             styles={selectStyles}
           />
-          {/* <select name="department" id="department" ref={departmentRef}>
-            {departments.map((department: Department) => (
-              <option key={department.name} value={department.name}>
-                {department.name}
-              </option>
-            ))}
-          </select> */}
         </form>
         <button type="submit" onClick={validateForm} className="submit-button">
           Save
@@ -424,25 +399,3 @@ function Form() {
 }
 
 export default Form;
-
-// const array = [
-//   {
-//     ref: createRef<HTMLInputElement>(),
-//     regex:firstNameValidation,
-//     value:firstNameRef.current ? firstNameRef.current.value : '',
-//     modalMessage: "First name needs atleast 2 characters"
-//   }
-// ]
-
-// if (!array.find(c=> {
-//   if (!c.regex.test(c.value)) {
-//     ShowModal({
-//       type: "2",
-//       errorModal: c.modalMessage,
-//       titleModal: titleMessage,
-//     });
-//     return c
-//   }
-// })) {
-//   // Show admin error
-// }

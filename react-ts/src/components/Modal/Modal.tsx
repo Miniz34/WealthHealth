@@ -73,14 +73,11 @@ function Cross({ onClick, closePosition }: CrossProps) {
   );
 }
 
-// const cssClasses = ["", "modal-blue", "modal-red"];
 const cssClasses = new Map<string, string>();
 cssClasses.set("info", "modal-blue");
 cssClasses.set("warning", "modal-orange");
 cssClasses.set("error", "modal-red");
 
-//TODO
-//modal-main-center : fixed causes display bug
 cssClasses.set("custom", "modal-custom");
 cssClasses.set("default", "modal-default");
 

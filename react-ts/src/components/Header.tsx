@@ -19,8 +19,7 @@ function Header({ title, link, subtitle }: HeaderProps) {
     DisplayModal({
       mode: "custom",
       children: <Employee />,
-      delay: 25000,
-      modalPosition: "top-left",
+      modalPosition: "center",
     });
   };
 
