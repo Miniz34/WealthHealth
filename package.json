@@ -1,8 +1,8 @@
 {
-  "name": "react-ts",
+  "name": "wealthhealth",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://miniz34.github.io/WealthHealth/react-ts",
+  "homepage": "https://miniz34.github.io/WealthHealth",
   "type": "module",
   "scripts": {
     "dev": "vite",

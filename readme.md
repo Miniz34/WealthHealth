@@ -1,41 +1,23 @@
 # HRnet OpenClassRooms P14
 
-[Site live](https://miniz34.github.io/WealthHealth/)
+<img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" />
+
+<img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB">
+
+<img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white">
+
+[<img src="https://img.shields.io/badge/website-000000?style=for-the-badge&logo=About.me&logoColor=white">](https://miniz34.github.io/WealthHealth/)
 
 ## Installation
 
-> git clone https://github.com/Miniz34/WealthHealth.git
+1. Clone repository
 
-open the directory in your IDE
+- `git clone https://github.com/Miniz34/WealthHealth.git`
 
-In the terminal, use the following commands :
+2. Install dependencies
 
-> cd react-ts
+- `npm install`
 
-> npm install
+3. Start the project
 
-## Starting the project
-
-While in the react-ts directory, use the following command :
-
-> npm run dev
-
-<!-- redux-toolkit !!!
-redux-saga vs async thunk
-docker
-key ssh -> github/gitlab
-git pull / push / commit / checkout / rebase
-kubernetes
-
-inscription npmjs > création de module
-
-tester module sur une autre app
-
-npm run build
-npx serve -s dist
-
-//TODO
-explication build // preview etc
-Weird git directory
-
-// @ts-expect-error TS doesn't detect that this signature is compatible -->
+- `npm run dev` or `yarn run dev`
