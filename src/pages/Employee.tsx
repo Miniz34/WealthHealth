@@ -1,6 +1,6 @@
 import "./App.css";
 import "./Employee.css";
-import Table from "../components/Table";
+import Table from "../components/Table/Table";
 import { Link } from "react-router-dom";
 
 function Employees() {

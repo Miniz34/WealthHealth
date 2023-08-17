@@ -8,31 +8,6 @@ import React, {
 import "./Modal.css";
 import { ModalContext } from "./ModalProvider";
 
-/*
- * Props for the Modal component.
- * @member {string} mode - info / warning / error
- * @member {string} title - The title of the modal.
- * @member {ReactNode | null} children - The children components to be rendered inside the modal.
- * @member {string} className - The additional class name for styling the modal.
- * @member {Function | null} onClose - callback requiring a "true" value to actuallu close the modal
- * @member {Function | null} onClosed - callback append on modal closed
- * @member {boolean} enableFadeIn - optional
- * @member {boolean} enableFadeOut - optional
- */
-/*
-interface ModalProps {
-  open?: boolean;
-  mode?: string; // "info", "error" , "warning", ""
-  title?: string;
-  children?: ReactNode | null;
-  className?: string;
-  onClosed?: (() => void) | null;
-  onClose?: (() => boolean) | null;
-  enableFadeIn?: boolean;
-  enableFadeOut?: boolean;
-}
-*/
-
 /**
  * Renders the close button of the modal.
  * @member {Function} onClick - The callback function to be called when the close button is clicked.
@@ -224,7 +199,8 @@ function Modal() {
             className={
               "modal-body" +
               (title ? " modal-title-exist" : "") +
-              (orientation === "row" ? " modal-row" : "")
+              (orientation === "row" ? " modal-row" : "") +
+              (mode === "default" ? " modal-body-default" : "")
             }
             style={
               orientation === "row"

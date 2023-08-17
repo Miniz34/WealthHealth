@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
 import "./Header.css";
 import { useContext } from "react";
-import Employee from "../pages/Employee";
+
+import Employee from "../../pages/Employee";
 // import { ModalContext } from "modal-kf-react/ModalProvider";
-import { ModalContext } from "./Modal/ModalProvider";
+import { ModalContext } from "../Modal/ModalProvider";
 
 interface HeaderProps {
   title: string;

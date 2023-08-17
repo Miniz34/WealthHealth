@@ -20,7 +20,7 @@
 
     "noFallthroughCasesInSwitch": true,
 
-    /*TODO build */
+    /*build */
     "sourceMap": true,
     "noUnusedParameters": false,
     "noUnusedLocals": false,

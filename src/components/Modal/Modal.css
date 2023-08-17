@@ -138,10 +138,12 @@
   justify-content: center;
   align-items: center;
   min-height: 50px;
-
-  /* TODO : scrollbar modal */
   max-height: calc(100vh - 200px);
   overflow-y: auto;
+}
+
+.modal-body-default {
+  padding-bottom: 8px;
 }
 
 .modal-title {

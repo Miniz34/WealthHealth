@@ -1,7 +1,6 @@
 import DataTable from "react-data-table-component";
 import "./table.css";
-
-import { sortString, sortDate, sortZipCode } from "../utils/sortingUtils";
+import { sortString, sortDate, sortZipCode } from "../../utils/sortingUtils";
 
 interface ItemSort {
   firstName: string;

@@ -7,7 +7,7 @@ import Employee from "./pages/Employee";
 function AppRouter() {
   return (
     <React.StrictMode>
-      <BrowserRouter basename="/">
+      <BrowserRouter basename="/WealthHealth">
         <Routes>
           <Route path="/employee-list" element={<Employee />} />
           <Route path="/" element={<App />} />

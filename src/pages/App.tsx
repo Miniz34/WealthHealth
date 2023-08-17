@@ -1,6 +1,6 @@
 import "./App.css";
-import Header from "../components/Header";
-import Form from "../components/Form";
+import Header from "../components/Header/Header";
+import Form from "../components/Form/Form";
 import ModalProvider from "../components/Modal/ModalProvider";
 
 function App() {

@@ -1,6 +1,6 @@
 import "./Form.css";
-import states from "../assets/states.json";
-import departments from "../assets/departments.json";
+import states from "../../assets/states.json";
+import departments from "../../assets/departments.json";
 import { createRef, useState, useContext } from "react";
 import {
   firstNameValidation,
@@ -10,14 +10,16 @@ import {
   startDateValidation,
   streetValidation,
   zipCodeValidation,
-} from "../utils/validation.js";
-import { ModalContext } from "./Modal/ModalProvider";
-import Randomizer from "../utils/random.js";
+} from "../../utils/validation.js";
+import { ModalContext } from "../Modal/ModalProvider";
+import Randomizer from "../../utils/random.js";
 import Select from "react-select";
 import { StylesConfig } from "react-select";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { DisplayModalProps } from "./Modal/ModalProvider";
+import { DisplayModalProps } from "../Modal/ModalProvider";
+
+import Employee from "../../pages/Employee";
 
 /**
  * @member {string} type
@@ -90,6 +92,7 @@ function Form() {
     }),
   };
 
+  // Randomizer employee, only used for prod //
   function addRandomEmployee() {
     let employees: any[] = [];
     try {
@@ -112,10 +115,8 @@ function Form() {
       localStorage.setItem("employees", JSON.stringify(employees));
       DisplayModal({
         mode: "info",
-        title: "Succes!",
+        title: "Succes !",
         children: "Employee created !",
-        enableFadeIn: false,
-        enableFadeOut: false,
       });
     } catch (error) {
       DisplayModal({
@@ -126,6 +127,8 @@ function Form() {
       });
     }
   }
+
+  // // // // //
 
   function validateForm() {
     const firstName = firstNameRef.current;
