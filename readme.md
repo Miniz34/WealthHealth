@@ -1,6 +1,5 @@
 # HRnet OpenClassRooms P14
 
-
 [<img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB">](https://react.dev/)
 
 [<img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white">](https://www.typescriptlang.org/)
@@ -20,3 +19,7 @@
 3. Start the project
 
 - `npm run dev` or `yarn run dev`
+
+### Modal package
+
+The npm package created for this excercise is the modal, and can be found [here](https://www.npmjs.com/package/modal-kf-react)
